@@ -7,6 +7,9 @@
 #                                                    AGENTS.md + contracts/)
 set -euo pipefail
 
+# Public home of these contracts; cited in AGENTS.md and A.G.P disclosures. Edit once.
+CONTRACTS_URL="https://github.com/<owner>/generic-contracts"
+
 SRC="$(cd "$(dirname "$0")/../contracts" && pwd)"
 mkdir -p "${1:-.}"
 DEST="$(cd "${1:-.}" && pwd)"
@@ -133,6 +136,7 @@ group() {
   echo "<!-- Generated $STAMP by new-agents.sh -->"
   echo
   echo "Contracts live in \`contracts/\`. Use only the contracts listed here."
+  echo "Contracts source: $CONTRACTS_URL"
   echo
   echo "1. Read every **Core** contract before any work."
   echo "2. Read a **When relevant** contract only when the task touches its subject."
@@ -153,6 +157,8 @@ for f in $SEL; do
   mkdir -p "$STAGE/contracts/$(dirname "$f")"
   cp "$SRC/$f" "$STAGE/contracts/$f"
 done
+mkdir -p "$STAGE/contracts/tools"
+cp "$SRC"/tools/* "$STAGE/contracts/tools/"   # chat-save / chat-check (CORE-AUDIT)
 
 (cd "$STAGE" && mkzip "$DEST/$STAMP-AGENTS.zip")
 

@@ -14,5 +14,5 @@ The author owns the work. The agent serves the author's intent, not its own tast
 - Respect content limits in the premise. Don't add or remove violence, sex, profanity, or sensitive material beyond them without asking.
 - State the basis of feedback (style sheet, canon, genre convention, JUDGMENT). Label taste as taste.
 - Mark AI-drafted passages so the author can review them.
-- Ensure all AI derived prose is documented and recorded. A full audit trail and documentation of any AI provided prose must be maintained.
+- Ensure all AI derived prose is documented and recorded. A full audit trail and documentation of any AI provided prose must be maintained, linking each AI-drafted passage to the archived chat that requested and produced it (CORE-AUDIT).
 - Validate and disclose any AI provided prose is free from plagiarism as part of the audit trail.

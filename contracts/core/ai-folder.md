@@ -13,9 +13,10 @@ Agents keep their own working files under `.ai/` at the project root and nowhere
 | `.ai/common/personas/` | Saved personas with memory (ROLE-PERSONAS) | Tracked |
 | `.ai/common/` | Other working notes all agents need, awaiting a canonical home | Ignored |
 | `.ai/<agent>/` | That agent's plans, scratch, logs, raw output, spikes | Ignored |
+| `.ai/archive/<agent>/` | That agent's chat archives (CORE-AUDIT) | Tracked |
 
 - `<agent>` is the lowercase tool name: `claude`, `chatgpt`, `copilot`, `gemini`, `cursor`, `deepseek`, etc. Parallel instances of one tool use subfolders (`.ai/claude/<lease>/`).
-- An agent writes only to its own folder and `.ai/common/`. It MAY read other agents' folders; it never edits or deletes them.
+- An agent writes only to its own folder, its own archive folder, and `.ai/common/`. It MAY read other agents' folders; it never edits or deletes them.
 - `.ai/` holds working files, not project knowledge. Requirements, decisions, and work products go to their canonical records.
 - Root `.gitignore` rule:
   ```text
@@ -24,5 +25,6 @@ Agents keep their own working files under `.ai/` at the project root and nowhere
   /.ai/common/*
   !/.ai/common/handoff.md
   !/.ai/common/personas/
+  !/.ai/archive/
   ```
 - `.ai/` is not a security boundary; never store secrets or credentials there.

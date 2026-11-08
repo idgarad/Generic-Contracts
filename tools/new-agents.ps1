@@ -10,6 +10,8 @@
 #>
 param([string]$OutDir = '.')
 $ErrorActionPreference = 'Stop'
+# Public home of these contracts; cited in AGENTS.md and A.G.P disclosures. Edit once.
+$ContractsUrl = 'https://github.com/<owner>/generic-contracts'
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
 
 $Src   = (Resolve-Path (Join-Path $PSScriptRoot '..\contracts')).Path
@@ -131,7 +133,8 @@ function Section($Title, $Prefix) { if (Has $Prefix) { Emit '' "## $Title" $Head
 Emit @(
   "# AGENTS.md: $Name", '',
   "<!-- Generated $Stamp by new-agents.ps1 -->", '',
-  'Contracts live in `contracts/`. Use only the contracts listed here.', '',
+  'Contracts live in `contracts/`. Use only the contracts listed here.',
+  "Contracts source: $ContractsUrl", '',
   '1. Read every **Core** contract before any work.',
   '2. Read a **When relevant** contract only when the task touches its subject.',
   '3. Adopt a **Role** only when the human assigns it (e.g. "act as QA"), then read that file.',
@@ -156,6 +159,9 @@ try {
   try { $w.Write(($out -join "`n") + "`n") } finally { $w.Dispose() }
   foreach ($f in $Sel) {
     [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, (Join-Path $Src $f), "contracts/$f")
+  }
+  foreach ($t in Get-ChildItem (Join-Path $Src 'tools') -File) {   # chat-save / chat-check (CORE-AUDIT)
+    [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $t.FullName, "contracts/tools/$($t.Name)")
   }
 } finally { $zip.Dispose() }
 

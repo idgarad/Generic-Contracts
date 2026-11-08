@@ -7,4 +7,5 @@ shim: Create .github/copilot-instructions.md containing "Follow AGENTS.md at the
 
 - **Discovery.** Copilot reads `.github/copilot-instructions.md`; the coding agent and recent IDE builds also read `AGENTS.md`. Support varies by IDE and version; verify.
 - **Path-scoped rules** go in `.github/instructions/*.instructions.md` with `applyTo` globs. They may tighten, never weaken, listed contracts.
+- **Chat archive.** In VS Code, use the chat export command (*Chat: Export Chat...*) where available; verify for your IDE.
 - **Tuning.** Add rules only for problems observed in this project, each dated.

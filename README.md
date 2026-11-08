@@ -6,7 +6,7 @@ Modular instruction contracts for AI agents. A project's `AGENTS.md` only lists 
 
 ```text
 contracts/
-  core/         always loaded: terms, principles, authority, evidence, completion, .ai folder
+  core/         always loaded: terms, principles, authority, evidence, completion, .ai folder, chat audit
   workflow/     binding, planning, records, agent state, workspace, enterprise
   software/     design, engineering, repository, testing, security, ops, lifecycle, docs
   literature/   canon, creative control, manuscript, quality, originality
