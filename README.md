@@ -1,6 +1,6 @@
 # Generic Contracts
 
-Modular instruction contracts for AI agents. A project's `AGENTS.md` only lists which contracts apply, and agents load just those. Definitions live in one place (`CORE-TERMS`) and each rule is stated once, which keeps context small across a project. Customize freely.
+Modular instruction contracts for AI agents. A project's `AGENTS.md` only lists which contracts apply, and agents load just those. Definitions live in one place (`CORE-TERMS`) and each rule is stated once, which keeps context small across a project. Customize them in your own fork (see [Using in an organization](#using-in-an-organization)).
 
 ## Layout
 
@@ -43,3 +43,24 @@ It then prints any provider shim to create (e.g. `CLAUDE.md` containing `@AGENTS
 - Don't name a contract file after an agent instruction file (`claude.md`, `gemini.md`, `agents.md`). Case-insensitive file systems make agents auto-load it.
 - Evidence behind contract wording: [docs/optimization-pass-1.md](docs/optimization-pass-1.md).
 - To add a contract, drop a `.md` file with frontmatter into the right folder; the script picks it up. Files starting with `_` are hidden from menus and included only through `requires`. See [CONTRACT-STYLE.md](CONTRACT-STYLE.md).
+
+## Using in an organization
+
+Create an internal fork for your organization rather than working from this repository directly.
+
+- Fill in `contracts/organization/company.md` (or a copy per business unit) and make any organization-specific changes in the fork.
+- Set the contracts URL in `tools/new-agents.sh` and `tools/new-agents.ps1` to your fork, so generated `AGENTS.md` files and A.G.P disclosures cite the version your projects actually use.
+- Pull updates from this repository into the fork as needed, and review them against your own changes before adopting them.
+
+## Contributing
+
+Only the maintainer merges changes into this repository. Outside contributions are accepted only from these sources and only for the contracts listed:
+
+| Contributor | May propose changes to |
+|---|---|
+| AI providers (e.g. Anthropic, OpenAI, GitHub, Google) | Their own provider contract in `contracts/providers/`, and core contracts in `contracts/core/` |
+| Tool owners (e.g. Atlassian, Obsidian, Microsoft) | Their own tool contracts in `contracts/integrations/` |
+
+- Work on a branch named for the contributor and the change (e.g. `ClaudeOptimizationPass1`), so each contribution keeps a clean audit trail.
+- Follow [CONTRACT-STYLE.md](CONTRACT-STYLE.md). Back changes to model behavior with a cited source or an observed, dated incident, and log the sources and per-contract changes in `docs/`, as in [docs/optimization-pass-1.md](docs/optimization-pass-1.md).
+- Everyone else: make changes in your own fork. Suggestions are welcome as issues.

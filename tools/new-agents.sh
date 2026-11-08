@@ -8,7 +8,7 @@
 set -euo pipefail
 
 # Public home of these contracts; cited in AGENTS.md and A.G.P disclosures. Edit once.
-CONTRACTS_URL="https://github.com/<owner>/generic-contracts"
+CONTRACTS_URL="https://github.com/idgarad/Generic-Contracts"
 
 SRC="$(cd "$(dirname "$0")/../contracts" && pwd)"
 mkdir -p "${1:-.}"

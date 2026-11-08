@@ -11,7 +11,7 @@
 param([string]$OutDir = '.')
 $ErrorActionPreference = 'Stop'
 # Public home of these contracts; cited in AGENTS.md and A.G.P disclosures. Edit once.
-$ContractsUrl = 'https://github.com/<owner>/generic-contracts'
+$ContractsUrl = 'https://github.com/idgarad/Generic-Contracts'
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
 
 $Src   = (Resolve-Path (Join-Path $PSScriptRoot '..\contracts')).Path
