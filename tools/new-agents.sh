@@ -127,7 +127,7 @@ group() {
   local f
   for f in $SEL; do
     case "$f" in $1)
-      printf '| %s | `contracts/%s` | %s |\n' "$(field id "$SRC/$f")" "$f" "$(field summary "$SRC/$f")" ;;
+      printf '| %s | `%s` | %s |\n' "$(field id "$SRC/$f")" "$f" "$(field summary "$SRC/$f")" ;;
     esac
   done | sort
 }
@@ -137,7 +137,7 @@ group() {
   echo
   echo "<!-- Generated $STAMP by new-agents.sh -->"
   echo
-  echo "Contracts live in \`contracts/\`. Use only the contracts listed here."
+  echo "File paths below are relative to \`contracts/\`. Use only the contracts listed here."
   echo "Contracts source: $CONTRACTS_URL"
   echo
   echo "1. Read every **Core** and **Organization** contract before any work."

@@ -123,7 +123,7 @@ do {
 $Header = @('', '| ID | File | Summary |', '|---|---|---|')
 function Rows($Prefix) {
   @($Sel | Where-Object { $_ -like "$Prefix*" } | ForEach-Object {
-    '| {0} | `contracts/{1}` | {2} |' -f (Get-Field 'id' $_), $_, (Get-Field 'summary' $_)
+    '| {0} | `{1}` | {2} |' -f (Get-Field 'id' $_), $_, (Get-Field 'summary' $_)
   } | Sort-Object)
 }
 function Has($Prefix) { [bool]($Sel | Where-Object { $_ -like "$Prefix*" }) }
@@ -135,7 +135,7 @@ function Section($Title, $Prefix) { if (Has $Prefix) { Emit '' "## $Title" $Head
 Emit @(
   "# AGENTS.md: $Name", '',
   "<!-- Generated $Stamp by new-agents.ps1 -->", '',
-  'Contracts live in `contracts/`. Use only the contracts listed here.',
+  'File paths below are relative to `contracts/`. Use only the contracts listed here.',
   "Contracts source: $ContractsUrl", '',
   '1. Read every **Core** and **Organization** contract before any work.',
   '2. Read a **When relevant** contract only when the task touches its subject.',

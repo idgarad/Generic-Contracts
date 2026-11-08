@@ -41,4 +41,5 @@ It then prints any provider shim to create (e.g. `CLAUDE.md` containing `@AGENTS
 - Menu filtering: a contract's domain is inferred from its folder (`software`, `literature`, otherwise any). Override it with a `domain:` frontmatter field, as the literary-only simulated personas do.
 - `contracts/` in a project is reserved for these contracts. Software interface definitions go in `interfaces/`.
 - Don't name a contract file after an agent instruction file (`claude.md`, `gemini.md`, `agents.md`). Case-insensitive file systems make agents auto-load it.
+- Evidence behind contract wording: [docs/optimization-pass-1.md](docs/optimization-pass-1.md).
 - To add a contract, drop a `.md` file with frontmatter into the right folder; the script picks it up. Files starting with `_` are hidden from menus and included only through `requires`. See [CONTRACT-STYLE.md](CONTRACT-STYLE.md).

@@ -9,5 +9,8 @@ Goal: the fewest tokens that still change behavior.
 - Imperative bullets. Use MUST/SHOULD/MAY only where the force matters.
 - Rules only: no rationale paragraphs, history, or examples unless the example *is* the rule.
 - Lower layers (domain, role, provider) may tighten rules, never weaken them.
+- Include only what an agent can't discover from the repository or reliably do by default. Every line in an always-loaded contract costs tokens in every session, and longer inputs measurably degrade reasoning (see [docs/optimization-pass-1.md](docs/optimization-pass-1.md)).
+- Put setup-only material (one-time configuration) in a "when relevant" contract, not in core.
+- Add a rule for a known model failure only with a cited source or an observed, dated incident.
 - No vendor names outside `providers/`.
 - Role contracts use: **Mission**, **May**, **Must not**, **Output**, and **Done when** if needed.
