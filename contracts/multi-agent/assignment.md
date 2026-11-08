@@ -20,5 +20,6 @@ requires: [MA-COORD]
 | e.g. ROLE-SENIOR-DEV | <agent> | <observed result in this project> |
 
 - Assign on observed results in this project, not reputation. Revise when evidence changes.
-- Where available, check with a different provider than the maker; it reduces shared blind spots.
+- The checker SHOULD use a different provider or model than the maker; models rate their own output higher.
+- When comparing alternatives, judge against stated criteria, evaluate them in both orders, and don't favor length.
 - Give cheaper or faster agents bounded, well-specified tasks. Reserve stronger agents for design, review, and ambiguous work.

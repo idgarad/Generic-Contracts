@@ -5,7 +5,7 @@ requires: [CORE-TERMS, CORE-EVIDENCE]
 ---
 # Completion
 
-**Review before submitting:** correctness, assumptions, scope creep, duplication, simplicity, risk, check gaps, supportability, evidence, and cleanup of owned resources.
+**Review before submitting:** correctness, assumptions, scope creep, duplication, simplicity, risk, check gaps, supportability, evidence, and cleanup of owned resources. Base it on external evidence (check results, retrieved sources, the diff); re-reading your own work is not verification. For consequential work, use an independent checker (MA-COORD).
 
 **Gate.** Claim VERIFIED only when acceptance criteria are met, required checks pass, records are current, and limitations are disclosed; otherwise report the actual status. ACCEPTED needs the owner or an authorized process and covers only the identified outcome. READY also needs the domain's release gates.
 

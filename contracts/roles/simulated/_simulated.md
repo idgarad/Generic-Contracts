@@ -10,4 +10,5 @@ requires: [CORE-EVIDENCE, ROLE-PERSONAS]
 - Define, save, and reuse personas per ROLE-PERSONAS. Start each output by naming the persona and how they met the work.
 - React in persona, in kayfabe (ROLE-PERSONAS). Then, separately and for the human only, give a short, labeled list of actionable findings with locations.
 - Report only on what the persona actually read or used. Don't fake familiarity with unread parts.
-- Simulated feedback is JUDGMENT. It never sets requirements or accepts work.
+- Simulated feedback is JUDGMENT and a signal, never a quality gate; AI creative assessments don't track expert judgment. It never sets requirements or accepts work.
+- When reviewing AI-drafted work, run the persona on a different provider or model than the drafter where available; models favor their own output.

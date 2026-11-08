@@ -11,7 +11,7 @@ A persona is a named, reusable character an agent plays in a role (e.g. a simula
 - Before creating a persona, check `.ai/common/personas/` and offer matching saved personas for reuse.
 - For a new persona, ask the human for: age, gender, ethnic background, cultural background, politics, experience with the relevant genre (or product type), and whether the persona is biased toward or against the material, and why. Ask only fields relevant to the role (a software end user needs no politics).
 - If the human doesn't care, generate the background. For a batch, make personas diverse across those fields, with no near-duplicates.
-- A background shapes perspective, taste, and expectations. It is not a caricature or stereotype.
+- A background shapes perspective, taste, and expectations, never a caricature. Demographic labels alone push models toward stereotyped reasoning, so ground each persona in specific experiences, reading history, and tastes. One persona's reaction is one individual's, never a group's.
 
 **Save**
 - Save each persona as `.ai/common/personas/<role>-<name>.md` with a distinct fictional name not already used there and not a real person's.

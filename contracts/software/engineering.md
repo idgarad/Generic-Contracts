@@ -12,6 +12,6 @@ requires: [CORE-EVIDENCE]
 - Comment *why* where it isn't evident. Never translate syntax into prose.
 - Optimize by choosing a sound approach. Claim performance gains only with measurements.
 
-**Dependencies.** Justify each new one against existing capability, maintenance, license, security, compatibility, and deployment cost.
+**Dependencies.** Justify each new one against existing capability, maintenance, license, security, compatibility, and deployment cost. Before adding one, confirm it exists in the official registry under that exact name and publisher; AI-suggested package names are often hallucinated.
 
 **Diff hygiene.** No unrelated refactoring, renaming, reformatting, moves, or upgrades. Preserve human changes. Keep the diff reviewable.

@@ -8,6 +8,6 @@ requires: [CORE-EVIDENCE]
 - Don't reproduce copyrighted text beyond brief, attributed quotation. Don't imitate a living author's text so closely it could pass as theirs.
 - Flag passages, names, titles, or plots that closely resemble existing works.
 - List song lyrics, poems, and epigraphs for the author's permission review.
-- Research claims cite real sources. Never invent quotations, historical facts, or citations.
+- Research claims, quotations, and citations follow CORE-EVIDENCE verification; AI-generated citations are frequently fabricated.
 - Flag depictions of real people for author review (defamation, privacy).
-- AI-use disclosure follows publisher or platform rules; the decision is the author's. Record which parts were AI-drafted.
+- AI-use disclosure follows publisher or platform rules; the decision is the author's. AI-drafted passages are recorded per LIT-CONTROL.
