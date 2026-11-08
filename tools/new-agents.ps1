@@ -93,6 +93,8 @@ foreach ($w in 'binding', 'planning', 'records', 'state', 'workspace') { Add-Sel
 if ($Scale -eq '3') { Add-Sel 'workflow/enterprise.md' }
 if ($Multi -like 'y*') { foreach ($f in Get-Md 'multi-agent') { Add-Sel (Get-Rel $f) } }
 
+$OrgDef = if ($Scale -eq '3') { 'all' } else { 'none' }
+Pick 'Organization template (company rules; fill in before use):' $OrgDef @('organization')
 Pick 'Software contracts:' 'all' @('software')
 Pick 'Literature contracts:' 'all' @('literature')
 Pick 'Roles and simulated personas (used only when assigned):' 'none' @('roles/software', 'roles/literature', 'roles/simulated')
@@ -135,13 +137,14 @@ Emit @(
   "<!-- Generated $Stamp by new-agents.ps1 -->", '',
   'Contracts live in `contracts/`. Use only the contracts listed here.',
   "Contracts source: $ContractsUrl", '',
-  '1. Read every **Core** contract before any work.',
+  '1. Read every **Core** and **Organization** contract before any work.',
   '2. Read a **When relevant** contract only when the task touches its subject.',
   '3. Adopt a **Role** only when the human assigns it (e.g. "act as QA"), then read that file.',
   '4. Read a **Tools** contract before using that tool.',
-  '5. Precedence: tool/system instructions > core > workflow > domain > tools > multi-agent > role > provider. Lower layers may tighten rules, never weaken them.',
+  '5. Precedence: tool/system instructions > core > organization > workflow > domain > tools > multi-agent > role > provider. Lower layers may tighten rules, never weaken them.',
   '', '## Core')
 Emit $Header (Rows 'core/')
+Section 'Organization' 'organization/'
 Emit '' '## When relevant' $Header
 foreach ($p in 'workflow/', 'software/', 'literature/', 'multi-agent/') { Emit (Rows $p) }
 Section 'Tools' 'integrations/'
@@ -168,6 +171,7 @@ try {
 Write-Host ''
 Write-Host "Wrote $zipPath ($($Sel.Count) contracts)"
 Write-Host 'Unzip at the project root to get AGENTS.md and contracts/.'
+if (Has 'organization/') { Write-Host '  Fill in contracts/organization/company.md before agents use it.' }
 foreach ($f in $Sel | Where-Object { $_ -like 'providers/*' }) {
   $s = Get-Field 'shim' $f
   if ($s) { Write-Host "  $(Get-Field 'id' $f): $s" }

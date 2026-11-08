@@ -98,6 +98,8 @@ for f in binding planning records state workspace; do add "workflow/$f.md"; done
 if [ "$SCALE" = 3 ]; then add workflow/enterprise.md; fi
 case "$MULTI" in y|Y*) for f in "$SRC"/multi-agent/*.md; do add "${f#"$SRC"/}"; done ;; esac
 
+if [ "$SCALE" = 3 ]; then ORGDEF=all; else ORGDEF=none; fi
+pick "Organization template (company rules; fill in before use):" "$ORGDEF" organization
 pick "Software contracts:" all software
 pick "Literature contracts:" all literature
 pick "Roles and simulated personas (used only when assigned):" none \
@@ -138,13 +140,14 @@ group() {
   echo "Contracts live in \`contracts/\`. Use only the contracts listed here."
   echo "Contracts source: $CONTRACTS_URL"
   echo
-  echo "1. Read every **Core** contract before any work."
+  echo "1. Read every **Core** and **Organization** contract before any work."
   echo "2. Read a **When relevant** contract only when the task touches its subject."
   echo "3. Adopt a **Role** only when the human assigns it (e.g. \"act as QA\"), then read that file."
   echo "4. Read a **Tools** contract before using that tool."
-  echo "5. Precedence: tool/system instructions > core > workflow > domain > tools > multi-agent > role > provider. Lower layers may tighten rules, never weaken them."
+  echo "5. Precedence: tool/system instructions > core > organization > workflow > domain > tools > multi-agent > role > provider. Lower layers may tighten rules, never weaken them."
   echo
   echo "## Core"; header; group 'core/*'
+  if has organization/; then echo; echo "## Organization"; header; group 'organization/*'; fi
   echo; echo "## When relevant"; header
   group 'workflow/*'; group 'software/*'; group 'literature/*'; group 'multi-agent/*'
   if has integrations/; then echo; echo "## Tools"; header; group 'integrations/*'; fi
@@ -165,6 +168,7 @@ cp "$SRC"/tools/* "$STAGE/contracts/tools/"   # chat-save / chat-check (CORE-AUD
 echo
 echo "Wrote $DEST/$STAMP-AGENTS.zip ($(echo $SEL | wc -w | tr -d ' ') contracts)"
 echo "Unzip at the project root to get AGENTS.md and contracts/."
+if has organization/; then echo "  Fill in contracts/organization/company.md before agents use it."; fi
 for f in $SEL; do
   case "$f" in providers/*)
     s="$(field shim "$SRC/$f")"
