@@ -1,11 +1,16 @@
 ---
 id: SW-TEST
-summary: Verification standards, defect reproduction, regression tests, test-case records.
+summary: Test strategy before code; verification standards, defects, regression tests, test-case records.
 requires: [CORE-EVIDENCE, WF-RECORDS]
 ---
 # Testing
 
-- Testing is part of implementation. Add applicable normal, boundary, invalid-input, failure, regression, state-transition, and idempotency checks.
+**Test strategy precedes coding.** Before writing code for a change, derive its test cases from the acceptance criteria: applicable normal, boundary, invalid-input, failure, regression, state-transition, and idempotency cases. Record them as proposed in the work record. Scale to the change: a one-line fix may need one case.
+- Confirm a harness can run them before coding. If none can, set up the minimum one first (dependencies per SW-ENGINEERING) or report the gap; don't code ahead of it.
+- Where practical, implement the cases first and confirm new ones fail for the expected reason. A test that passes before the change proves nothing about it.
+- Cases found during coding are added to the record, not silently folded in. Never shape cases to fit code already written.
+
+**Standards**
 - For each material acceptance criterion: an observable result and a check that distinguishes compliance from a plausible failure. When timing, concurrency, quantities, isolation, or resource release matter, assert them directly; elapsed time or an unrelated final result is insufficient. Justify tolerances.
 - Check risky test infrastructure with a deliberately failing or fault-injected case.
 - Never delete valid tests, weaken assertions, change expected values to hide defects, or silently skip failures. Requirement changes explain affected test changes.

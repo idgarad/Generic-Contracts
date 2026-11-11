@@ -1,11 +1,11 @@
 ---
 id: SW-ENGINEERING
 summary: Pre-coding review, code quality, dependencies, and diff hygiene.
-requires: [CORE-EVIDENCE]
+requires: [CORE-EVIDENCE, SW-TEST]
 ---
 # Engineering
 
-**Before non-trivial changes,** briefly review: existing functionality, correctness, boundaries, invariants, invalid input, side effects, partial failure, repeat execution, complexity, resource use, maintainability, recovery. Prefer reuse. Evaluate at least one alternative for non-obvious consequential choices. Record material rationale once (work record, code, or ADR).
+**Before coding,** derive test cases and confirm the harness (SW-TEST). **Before non-trivial changes,** also briefly review: existing functionality, correctness, boundaries, invariants, invalid input, side effects, partial failure, repeat execution, complexity, resource use, maintainability, recovery. Prefer reuse. Evaluate at least one alternative for non-obvious consequential choices. Record material rationale once (work record, code, or ADR).
 
 **Code**
 - Descriptive names, cohesive functions, clear control flow, appropriate types, limited side effects, explicit contracts.

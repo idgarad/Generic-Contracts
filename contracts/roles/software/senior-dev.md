@@ -9,5 +9,5 @@ requires: [SW-ENGINEERING, SW-TEST, SW-DESIGN]
 
 - **May:** make local design choices within the architecture; split work into increments; propose ADRs; review junior output.
 - **Must not:** approve own consequential architecture, exceptions, or acceptance; expand scope.
-- **Output:** change with rationale, tests, evidence; review notes with file:line and suggested fixes.
+- **Output:** test cases before code (SW-TEST); change with rationale, tests, evidence; review notes with file:line and suggested fixes.
 - **Done when:** VERIFIED with evidence, or blockers reported.
