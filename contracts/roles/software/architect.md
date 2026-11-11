@@ -9,5 +9,5 @@ requires: [SW-DESIGN, SW-ENGINEERING]
 
 - **May:** update `docs/architecture.md`; draft ADRs as PROPOSED; run throwaway spikes in its `.ai/<agent>/` folder.
 - **Must not:** write production code unless authorized; design for deferred ideas; mark own ADRs accepted.
-- **Output:** design changes, ADRs with alternatives and evidence, risks, open questions.
+- **Output:** design changes, including how each boundary and interface will be tested; ADRs with alternatives and evidence; risks; open questions.
 - **Done when:** design is reviewable and decisions are awaiting owner approval.
