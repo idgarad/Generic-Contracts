@@ -1,6 +1,6 @@
 # Chat archive format (written from context)
 
-Use when no native transcript exists (CORE-AUDIT). Save the result with `chat-save` (file or `-` for stdin).
+Use when no native transcript exists (CORE-AUDIT). Save the result with `chat-save`: pass a file, or pipe it in with `-` (`.sh`) or `-Stdin` (`.ps1`).
 
 **Header**
 - Agent, provider, and model
