@@ -4,17 +4,20 @@
   project uses, plus a zip of AGENTS.md and those contracts.
 .DESCRIPTION
   PowerShell port of new-agents.sh. Works on Windows PowerShell 5.1 and PowerShell 7+.
-  Output: <OutDir>\<yyyyMMddTHHmmss>-AGENTS.zip  (unzip at project root: AGENTS.md + contracts/)
+  Output: <OutDir>\<yyyyMMddTHHmmss>-AGENTS.zip  (unzip at project root: AGENTS.md + contracts/ + tools/)
+  OutDir defaults to output\ at the repo root (git-ignored).
 .EXAMPLE
   powershell -ExecutionPolicy Bypass -File tools\new-agents.ps1 -OutDir C:\src\myproject
 #>
-param([string]$OutDir = '.')
+param([string]$OutDir = '')
 $ErrorActionPreference = 'Stop'
 # Public home of these contracts; cited in AGENTS.md and A.G.P disclosures. Edit once.
 $ContractsUrl = 'https://github.com/idgarad/Generic-Contracts'
 Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
 
 $Src   = (Resolve-Path (Join-Path $PSScriptRoot '..\contracts')).Path
+$NameDefault = if ($OutDir) { $null } else { 'project' }
+if (-not $OutDir) { $OutDir = Join-Path $PSScriptRoot '..\output' }
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
 $Dest  = (Resolve-Path $OutDir).Path
 $Stamp = Get-Date -Format 'yyyyMMddTHHmmss'
@@ -80,7 +83,8 @@ Write-Host 'Is this a software project or a literary project?'
 Write-Host '  1) software  2) literary  3) both  4) neither (core + workflow only)'
 $Dom  = Ask 'Project type' '1'
 $Doms = switch ($Dom) { '1' { @('software') } '2' { @('literature') } '3' { @('software', 'literature') } default { @() } }
-$Name = Ask 'Project name' (Split-Path $Dest -Leaf)
+if (-not $NameDefault) { $NameDefault = Split-Path $Dest -Leaf }
+$Name = Ask 'Project name' $NameDefault
 $Scale = '1'
 if ($Doms -contains 'software') {
   Write-Host 'Scale: 1) solo  2) team  3) enterprise'
@@ -163,14 +167,14 @@ try {
   foreach ($f in $Sel) {
     [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, (Join-Path $Src $f), "contracts/$f")
   }
-  foreach ($t in Get-ChildItem (Join-Path $Src 'tools') -File) {   # chat-save / chat-check (CORE-AUDIT)
-    [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $t.FullName, "contracts/tools/$($t.Name)")
+  foreach ($t in 'chat-save.sh', 'chat-save.ps1', 'chat-check.sh', 'chat-check.ps1', 'archive-format.md') {   # CORE-AUDIT
+    [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, (Join-Path $PSScriptRoot $t), "tools/$t")
   }
 } finally { $zip.Dispose() }
 
 Write-Host ''
 Write-Host "Wrote $zipPath ($($Sel.Count) contracts)"
-Write-Host 'Unzip at the project root to get AGENTS.md and contracts/.'
+Write-Host 'Unzip at the project root to get AGENTS.md, contracts/, and tools/.'
 if (Has 'organization/') { Write-Host '  Fill in contracts/organization/company.md before agents use it.' }
 foreach ($f in $Sel | Where-Object { $_ -like 'providers/*' }) {
   $s = Get-Field 'shim' $f

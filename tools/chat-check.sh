@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # chat-check.sh - check that chat archiving (CORE-AUDIT) works in this project.
-# Usage: bash contracts/tools/chat-check.sh      Exit code 1 if any check FAILs.
+# Usage: bash tools/chat-check.sh      Exit code 1 if any check FAILs.
 set -uo pipefail
 
-ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SAVE="$(dirname "$0")/chat-save.sh"
 fails=0
 ok()   { echo "PASS  $*"; }

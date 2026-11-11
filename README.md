@@ -16,7 +16,7 @@ contracts/
   multi-agent/  coordination, assignment
   roles/        software/, literature/, simulated/ (used only when assigned)
   providers/    anthropic, openai, copilot, google, cursor, deepseek
-tools/new-agents.sh, tools/new-agents.ps1
+tools/          new-agents (build AGENTS.md); chat-save, chat-check, archive-format (CORE-AUDIT, shipped to projects)
 ```
 
 ## Build a project's AGENTS.md
@@ -31,7 +31,7 @@ Windows (PowerShell 5.1 or 7+):
 powershell -ExecutionPolicy Bypass -File tools\new-agents.ps1 [-OutDir path]
 ```
 
-The first question (software, literary, both, or neither) filters every later menu, so you only see relevant contracts, roles, and tools. A literary project gets 4 prompts plus 4 menus; enterprise scale is asked only for software. The script writes one file, `<YYYYMMDDTHHMMSS>-AGENTS.zip`. Unzip it at the project root to get `AGENTS.md` and `contracts/`, containing only the selected contracts and their dependencies.
+The first question (software, literary, both, or neither) filters every later menu, so you only see relevant contracts, roles, and tools. A literary project gets 4 prompts plus 4 menus; enterprise scale is asked only for software. The script writes one file, `<YYYYMMDDTHHMMSS>-AGENTS.zip`, to `output/` at the repository root (git-ignored) unless you pass a folder. Unzip it at the project root to get `AGENTS.md`, `contracts/` (only the selected contracts and their dependencies), and `tools/` (the chat-archive scripts).
 
 It then prints any provider shim to create (e.g. `CLAUDE.md` containing `@AGENTS.md`).
 
