@@ -11,7 +11,7 @@ contracts/
   workflow/     binding, planning, records, agent state, workspace, enterprise
   software/     design, engineering, repository, testing, security, ops, lifecycle, docs
   literature/   canon, creative control, manuscript, quality, originality
-  integrations/ tool rules: software/ (Jira, Confluence, GitHub, GitLab, Azure DevOps),
+  integrations/ tool rules: software/ (Jira, Confluence, GitHub, GitLab, Azure DevOps, PractiTest),
                 literature/ (Obsidian, OneNote, Scrivener, Word, Google Docs), general/ (Notion)
   multi-agent/  coordination, assignment
   roles/        software/, literature/, simulated/ (used only when assigned)
