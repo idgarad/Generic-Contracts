@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # chat-save.sh - force-save a chat into the audit archive (CORE-AUDIT), gzipped.
-# Usage: bash contracts/tools/chat-save.sh [-a agent] [-t topic] [-n] [file|-]
+# Usage: bash tools/chat-save.sh [-a agent] [-t topic] [-n] [file|-]
 #   file : transcript to save; - reads stdin. Omitted: the agent's native
 #          transcript is located (claude, codex/chatgpt); others need a file.
 #   -n   : only print the native transcript path that would be saved.
@@ -8,7 +8,7 @@
 # overwrites; duplicate copies are fine. AI_ARCHIVE_DIR overrides .ai/archive.
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 AGENT=claude TOPIC=chat PRINT=0
 while getopts "a:t:nh" o; do
   case "$o" in

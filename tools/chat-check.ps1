@@ -2,10 +2,10 @@
 .SYNOPSIS
   Check that chat archiving (CORE-AUDIT) works in this project. Exit code 1 if any check FAILs.
 .EXAMPLE
-  powershell -ExecutionPolicy Bypass -File contracts\tools\chat-check.ps1
+  powershell -ExecutionPolicy Bypass -File tools\chat-check.ps1
 #>
 $ErrorActionPreference = 'Stop'
-$Root = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+$Root = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $Save = Join-Path $PSScriptRoot 'chat-save.ps1'
 $script:fails = 0
 function Ok($m)   { Write-Host "PASS  $m" }
@@ -46,12 +46,15 @@ try {
 finally { Remove-Item Env:\AI_ARCHIVE_DIR -ErrorAction SilentlyContinue; Remove-Item -Recurse -Force $tmp }
 
 if (Get-Command git -ErrorAction SilentlyContinue) {
+  # On 5.1, native stderr under 'Stop' throws even when redirected; judge by exit code only.
+  $ErrorActionPreference = 'Continue'
   & git -C $Root rev-parse 2>$null | Out-Null
-  if ($LASTEXITCODE -eq 0) {
-    & git -C $Root check-ignore -q '.ai/archive/x/test.md.gz'
-    if ($LASTEXITCODE -eq 0) { Bad "git ignores .ai/archive/ (add '!/.ai/archive/' to .gitignore; see CORE-AI-FOLDER)" }
-    else { Ok 'git tracks .ai/archive/' }
-  } else { Warn 'not a git repository; archives are not version-controlled' }
+  $inRepo = $LASTEXITCODE -eq 0
+  if ($inRepo) { & git -C $Root check-ignore -q '.ai/archive/x/test.md.gz' 2>$null; $ignored = $LASTEXITCODE -eq 0 }
+  $ErrorActionPreference = 'Stop'
+  if (-not $inRepo) { Warn 'not a git repository; archives are not version-controlled' }
+  elseif ($ignored) { Bad "git ignores .ai/archive/ (add '!/.ai/archive/' to .gitignore; see CORE-AI-FOLDER)" }
+  else { Ok 'git tracks .ai/archive/' }
 } else { Warn 'git not found; archives are not version-controlled' }
 
 foreach ($a in 'claude', 'codex') {

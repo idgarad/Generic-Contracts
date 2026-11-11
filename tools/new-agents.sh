@@ -2,17 +2,19 @@
 # new-agents.sh - ask a few questions, then build an AGENTS.md that lists the
 # contracts a project uses, plus a zip of AGENTS.md and those contracts.
 #
-# Usage: bash tools/new-agents.sh [output-dir]      (default: current dir)
+# Usage: bash tools/new-agents.sh [output-dir]      (default: output/ at repo root, git-ignored)
 # Output: <output-dir>/<YYYYMMDDTHHMMSS>-AGENTS.zip  (unzip at project root:
-#                                                    AGENTS.md + contracts/)
+#                                                    AGENTS.md + contracts/ + tools/)
 set -euo pipefail
 
 # Public home of these contracts; cited in AGENTS.md and A.G.P disclosures. Edit once.
 CONTRACTS_URL="https://github.com/idgarad/Generic-Contracts"
 
 SRC="$(cd "$(dirname "$0")/../contracts" && pwd)"
-mkdir -p "${1:-.}"
-DEST="$(cd "${1:-.}" && pwd)"
+TOOLS="$(cd "$(dirname "$0")" && pwd)"
+OUT="${1:-$(dirname "$0")/../output}"
+mkdir -p "$OUT"
+DEST="$(cd "$OUT" && pwd)"
 STAMP="$(date +%Y%m%dT%H%M%S)"
 STAGE="$(mktemp -d)"
 trap 'rm -rf "$STAGE"' EXIT
@@ -63,14 +65,14 @@ resolve() { # contract ID -> path relative to SRC
 
 mkzip() { # run inside $STAGE; $1 = absolute zip path
   if command -v zip >/dev/null 2>&1; then
-    zip -qr "$1" AGENTS.md contracts
+    zip -qr "$1" AGENTS.md contracts tools
   elif python3 -c '' >/dev/null 2>&1; then
-    python3 -m zipfile -c "$1" AGENTS.md contracts
+    python3 -m zipfile -c "$1" AGENTS.md contracts tools
   elif python -c '' >/dev/null 2>&1; then
-    python -m zipfile -c "$1" AGENTS.md contracts
+    python -m zipfile -c "$1" AGENTS.md contracts tools
   elif command -v powershell.exe >/dev/null 2>&1; then
     powershell.exe -NoProfile -Command \
-      "Compress-Archive -Path AGENTS.md,contracts -DestinationPath '$(cygpath -w "$1")' -Force"
+      "Compress-Archive -Path AGENTS.md,contracts,tools -DestinationPath '$(cygpath -w "$1")' -Force"
   else
     echo "No zip tool found (zip, python, or powershell)." >&2; return 1
   fi
@@ -85,7 +87,7 @@ DOM="$(ask 'Project type' 1)"
 case "$DOM" in
   1) DOMS=software ;; 2) DOMS=literature ;; 3) DOMS="software literature" ;; *) DOMS="" ;;
 esac
-NAME="$(ask 'Project name' "$(basename "$DEST")")"
+NAME="$(ask 'Project name' "$(if [ -n "${1:-}" ]; then basename "$DEST"; else echo project; fi)")"
 SCALE=1
 case " $DOMS " in *" software "*)
   echo "Scale: 1) solo  2) team  3) enterprise"
@@ -160,14 +162,16 @@ for f in $SEL; do
   mkdir -p "$STAGE/contracts/$(dirname "$f")"
   cp "$SRC/$f" "$STAGE/contracts/$f"
 done
-mkdir -p "$STAGE/contracts/tools"
-cp "$SRC"/tools/* "$STAGE/contracts/tools/"   # chat-save / chat-check (CORE-AUDIT)
+mkdir -p "$STAGE/tools"
+for t in chat-save.sh chat-save.ps1 chat-check.sh chat-check.ps1 archive-format.md; do   # CORE-AUDIT
+  cp "$TOOLS/$t" "$STAGE/tools/"
+done
 
 (cd "$STAGE" && mkzip "$DEST/$STAMP-AGENTS.zip")
 
 echo
 echo "Wrote $DEST/$STAMP-AGENTS.zip ($(echo $SEL | wc -w | tr -d ' ') contracts)"
-echo "Unzip at the project root to get AGENTS.md and contracts/."
+echo "Unzip at the project root to get AGENTS.md, contracts/, and tools/."
 if has organization/; then echo "  Fill in contracts/organization/company.md before agents use it."; fi
 for f in $SEL; do
   case "$f" in providers/*)

@@ -8,11 +8,11 @@
   Writes .ai\archive\<agent>\<yyyyMMddTHHmmss>-<topic>.<ext>.gz. Never overwrites;
   duplicate copies are fine. $env:AI_ARCHIVE_DIR overrides .ai\archive.
 .EXAMPLE
-  powershell -ExecutionPolicy Bypass -File contracts\tools\chat-save.ps1 -Agent claude -Topic chapter1
+  powershell -ExecutionPolicy Bypass -File tools\chat-save.ps1 -Agent claude -Topic chapter1
 #>
 param([string]$Agent = 'claude', [string]$Topic = 'chat', [string]$Path = '', [switch]$NativeOnly)
 $ErrorActionPreference = 'Stop'
-$Root  = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+$Root  = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $Agent = $Agent.ToLower()
 $Topic = $Topic -replace '[^A-Za-z0-9._-]', '-'
 
