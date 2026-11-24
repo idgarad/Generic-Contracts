@@ -1,6 +1,6 @@
 ---
 id: SW-ENGINEERING
-summary: Pre-coding review, code quality, dependencies, and diff hygiene.
+summary: Pre-coding review, code quality, code documentation, dependencies, and diff hygiene.
 requires: [CORE-EVIDENCE, SW-TEST]
 ---
 # Engineering
@@ -9,8 +9,13 @@ requires: [CORE-EVIDENCE, SW-TEST]
 
 **Code**
 - Descriptive names, cohesive functions, clear control flow, appropriate types, limited side effects, explicit contracts.
-- Comment *why* where it isn't evident. Never translate syntax into prose.
 - Optimize by choosing a sound approach. Claim performance gains only with measurements.
+
+**Code documentation.** Code explains itself to a reader without the conversation.
+- Document every non-trivial module, class, and function in the language's doc-comment form (docstring, JSDoc, XML doc, comment-based help): purpose, inputs, outputs, errors, side effects, and constraints the signature doesn't show. Trivial code whose name and signature say everything (accessors, simple wrappers) needs none.
+- Comment *why* for non-obvious logic: rationale, invariants, workarounds and their cause. Never translate syntax into prose.
+- Update comments in the same change as the code. A comment that contradicts the code is a defect.
+- A function map, catalog, or generated reference never replaces doc comments.
 
 **Dependencies.** Justify each new one against existing capability, maintenance, license, security, compatibility, and deployment cost. Before adding one, confirm it exists in the official registry under that exact name and publisher; AI-suggested package names are often hallucinated.
 
