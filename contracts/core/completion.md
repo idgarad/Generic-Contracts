@@ -9,6 +9,6 @@ requires: [CORE-TERMS, CORE-EVIDENCE]
 
 **Gate.** Claim VERIFIED only when acceptance criteria are met, required checks pass, records are current, and limitations are disclosed; otherwise report the actual status. ACCEPTED needs the owner or an authorized process and covers only the identified outcome. READY also needs the domain's release gates.
 
-**Final report** (concise): outcome; what changed; status; checks and results; material assumptions and limitations; current state, including anything left running. Update the work authority and handoff as needed. Suggest a next candidate only if useful; never start it.
+**Final report.** Give the human a self-contained summary of the outcome, changes, status, check results, material assumptions, limitations, and anything left running. Link detailed evidence from the work record. Update the handoff when resumption details change. Suggest a next candidate only if useful.
 
 On completion or blockage, stop. Remaining time, context, or candidates do not authorize more work.

@@ -2,7 +2,7 @@
 
 Goal: the fewest tokens that still change behavior.
 
-- **Frontmatter:** `id`, `summary` (15 words or fewer; shown in the picker and in AGENTS.md), `requires` (list of IDs), `shim` for providers only, and `domain` (`software`, `literature`, `any`) only when the folder doesn't already imply it.
+- **Frontmatter** includes `id`, `summary` (15 words or fewer), `requires` (IDs to package), `shim` for providers only, and `domain` (`software`, `literature`, `any`) only when the folder doesn't imply it. For a conditional dependency, name the trigger and the required ID in the rule.
 - One contract, one subject. Target 40 lines or fewer; core stays under 150 lines total.
 - Define terms only in `CORE-TERMS`; elsewhere just use them. Refer to other contracts by ID, never by section number.
 - State each rule once. If two contracts need it, put it in the more general one and `require` that.

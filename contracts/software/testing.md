@@ -1,7 +1,7 @@
 ---
 id: SW-TEST
 summary: Test strategy before code; standards, self-reporting tests, release separation, defects, test cases.
-requires: [CORE-EVIDENCE, WF-RECORDS]
+requires: [CORE-EVIDENCE, WF-RECORDS, SW-OPS]
 ---
 # Testing
 
@@ -23,10 +23,11 @@ requires: [CORE-EVIDENCE, WF-RECORDS]
 - Every test entry point exits non-zero on any failure.
 - Where a harness exists, use its reporter (e.g. JUnit XML, TAP); don't add parallel custom logging.
 - Unless the binding names a location, log to stdout and to a timestamped file in `Reports/`. Never log secrets (SW-SECURITY).
+- Capture verbose output outside model context. Read the runner's exit status, totals (including skips), and relevant failure excerpts first. Inspect the full report when diagnosis or a criterion requires it. Missing or incomplete results need investigation before claiming PASS.
 
 **Release separation.** Unless the work record or binding requires otherwise, production builds and release artifacts contain no test code: tests, fixtures, mocks, test data, test-only flags, hooks, or endpoints, or test logging.
 - Keep test code in files or directories the production build excludes. Inject test doubles; don't branch on a test mode in production code.
-- Before claiming READY, inspect the release artifact for test code.
+- When assessing READY, inspect the release artifact for test code and apply SW-OPS.
 - Operational diagnostics (SW-OPS) are production features, not test code.
 
 **Defects.** Record expected vs actual, basis, reproduction, environment, impact; label unconfirmed reports. For an authorized fix, reproduce with the smallest check and add a regression test that fails before and passes after. If impractical, record why and the alternative verification.

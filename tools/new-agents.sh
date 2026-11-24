@@ -95,6 +95,7 @@ case " $DOMS " in *" software "*)
 esac
 MULTI="$(ask 'Will several agents work on this project? (y/n)' n)"
 
+add core/terms.md
 for f in "$SRC"/core/*.md; do add "${f#"$SRC"/}"; done
 for f in binding planning records state workspace; do add "workflow/$f.md"; done
 if [ "$SCALE" = 3 ]; then add workflow/enterprise.md; fi
@@ -117,7 +118,7 @@ while [ "$changed" = 1 ]; do
   for f in $SEL; do
     for r in $(field requires "$SRC/$f" | tr -d '[],'); do
       p="$(resolve "$r")"
-      if [ -z "$p" ]; then echo "warning: $f requires unknown $r" >&2; continue; fi
+      if [ -z "$p" ]; then echo "$f requires unknown $r" >&2; exit 1; fi
       case " $SEL " in *" $p "*) ;; *) SEL="$SEL $p"; changed=1 ;; esac
     done
   done
@@ -131,7 +132,7 @@ group() {
     case "$f" in $1)
       printf '| %s | `%s` | %s |\n' "$(field id "$SRC/$f")" "$f" "$(field summary "$SRC/$f")" ;;
     esac
-  done | sort
+  done | LC_ALL=C sort
 }
 
 {
@@ -139,16 +140,25 @@ group() {
   echo
   echo "<!-- Generated $STAMP by new-agents.sh -->"
   echo
-  echo "File paths below are relative to \`contracts/\`. Use only the contracts listed here."
+  echo "Contract index paths are relative to \`contracts/\`. Use only the contracts included here."
   echo "Contracts source: $CONTRACTS_URL"
   echo
-  echo "1. Read every **Core** and **Organization** contract before any work."
-  echo "2. Read a **When relevant** contract only when the task touches its subject."
+  echo "1. Apply the embedded Core rules and read every listed Organization contract before work."
+  echo "2. Read relevant contracts and applicable prerequisites. Packaged dependencies can cover later stages."
   echo "3. Adopt a **Role** only when the human assigns it (e.g. \"act as QA\"), then read that file."
   echo "4. Read a **Tools** contract before using that tool."
   echo "5. Precedence: tool/system instructions > core > organization > workflow > domain > tools > multi-agent > role > provider. Lower layers may tighten rules, never weaken them."
   echo
-  echo "## Core"; header; group 'core/*'
+  echo "## Core"
+  for f in $SEL; do
+    case "$f" in core/*)
+      echo; echo "### $(field id "$SRC/$f")"
+      awk '{ sub(/\r$/, "") }
+           !start { if (NR > 1 && $0 == "---") start = NR + 1; next }
+           NR == start && /^# / { next }
+           { print }' "$SRC/$f" ;;
+    esac
+  done
   if has organization/; then echo; echo "## Organization"; header; group 'organization/*'; fi
   echo; echo "## When relevant"; header
   group 'workflow/*'; group 'software/*'; group 'literature/*'; group 'multi-agent/*'
@@ -159,6 +169,7 @@ group() {
 } > "$STAGE/AGENTS.md"
 
 for f in $SEL; do
+  case "$f" in core/*) continue ;; esac
   mkdir -p "$STAGE/contracts/$(dirname "$f")"
   cp "$SRC/$f" "$STAGE/contracts/$f"
 done
