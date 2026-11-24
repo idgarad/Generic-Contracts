@@ -1,6 +1,6 @@
 # Generic Contracts
 
-Modular instruction contracts for AI agents. A project's `AGENTS.md` only lists which contracts apply, and agents load just those. Definitions live in one place (`CORE-TERMS`) and each rule is stated once, which keeps context small across a project. Customize them in your own fork (see [Using in an organization](#using-in-an-organization)).
+Modular instruction contracts for AI agents. Each generated `AGENTS.md` contains the core rules and an index of the project's other contracts. Agents read the indexed files as their tasks require them. Customize the source contracts in your own fork (see [Using in an organization](#using-in-an-organization)).
 
 ## Layout
 
@@ -33,7 +33,7 @@ powershell -ExecutionPolicy Bypass -File tools\new-agents.ps1 [-OutDir path]
 
 The first question (software, literary, both, or neither) filters every later menu, so you only see relevant contracts, roles, and tools. A literary project gets 4 prompts plus 4 menus; enterprise scale is asked only for software. The script writes one file, `<YYYYMMDDTHHMMSS>-AGENTS.zip`, to `output/` at the repository root (git-ignored) unless you pass a folder. Unzip it at the project root to get `AGENTS.md`, `contracts/` (only the selected contracts and their dependencies), and `tools/` (the chat-archive scripts).
 
-It then prints any provider shim to create (e.g. `CLAUDE.md` containing `@AGENTS.md`).
+It then prints any provider shim to create (e.g. `CLAUDE.md` containing `@AGENTS.md`). When upgrading an existing project, reconcile local core customizations into the new embedded rules. Earlier packages shipped those rules in `contracts/core/`.
 
 ## Rules for the system
 
@@ -41,7 +41,7 @@ It then prints any provider shim to create (e.g. `CLAUDE.md` containing `@AGENTS
 - Menu filtering: a contract's domain is inferred from its folder (`software`, `literature`, otherwise any). Override it with a `domain:` frontmatter field, as the literary-only simulated personas do.
 - `contracts/` in a project is reserved for these contracts. Software interface definitions go in `interfaces/`.
 - Don't name a contract file after an agent instruction file (`claude.md`, `gemini.md`, `agents.md`). Case-insensitive file systems make agents auto-load it.
-- Evidence behind contract wording: [docs/optimization-pass-1.md](docs/optimization-pass-1.md), [docs/optimization-pass-2.md](docs/optimization-pass-2.md).
+- Evidence behind contract wording appears in [pass 1](docs/optimization-pass-1.md), [pass 2](docs/optimization-pass-2.md), and the [project-lifetime optimization pass](docs/optimization-pass-3.md).
 - To add a contract, drop a `.md` file with frontmatter into the right folder; the script picks it up. Files starting with `_` are hidden from menus and included only through `requires`. See [CONTRACT-STYLE.md](CONTRACT-STYLE.md).
 
 ## Using in an organization

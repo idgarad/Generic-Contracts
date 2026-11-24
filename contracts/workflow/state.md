@@ -7,7 +7,7 @@ requires: [CORE-TERMS, CORE-AI-FOLDER]
 
 Classify records by purpose, not author. AI-written requirements are project knowledge, not agent memory.
 
-- **Handoff**: `.ai/common/handoff.md`, one file updated in place, 200 lines or fewer. Active work reference, last verified state, blockers, next action, links. No copies of requirements, tasks, or criteria.
+- **Handoff**: update `.ai/common/handoff.md` in place (200 lines maximum). Link the work record and give any blocker, next owner, and next action. Keep results and evidence in their canonical records.
 - Reconcile the work authority and handoff with reality at authorization, pause, resume, completion, and acceptance. On resume, check current state; don't replay stale plans.
 - **Temporary state** (plans, logs, raw output, scratch) goes in the agent's own `.ai/<agent>/` folder (CORE-AI-FOLDER). Defaults: 50 MiB total under `.ai/` and 7-day retention, both excluding `.ai/archive/` (CORE-AUDIT). Before exceeding a budget, report and propose a fix; never relocate files to evade it.
 - Agent memory never sets requirements, approves decisions, widens scope, or overrides records or evidence.

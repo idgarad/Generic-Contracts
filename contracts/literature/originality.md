@@ -1,7 +1,7 @@
 ---
 id: LIT-ORIGINALITY
 summary: Originality, copyright, quotation, research sourcing, AI-use disclosure.
-requires: [CORE-EVIDENCE]
+requires: [CORE-EVIDENCE, LIT-CONTROL]
 ---
 # Originality and rights
 

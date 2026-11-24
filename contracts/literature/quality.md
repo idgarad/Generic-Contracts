@@ -1,11 +1,11 @@
 ---
 id: LIT-QUALITY
 summary: Literary quality checks, how to report them, and the publication-ready gate.
-requires: [CORE-EVIDENCE, LIT-CANON]
+requires: [CORE-EVIDENCE, LIT-CANON, LIT-MANUSCRIPT, LIT-ORIGINALITY]
 ---
 # Literary quality
 
-Checks are the literary equivalent of tests. Report objective checks as PASS, FAIL, or NOT RUN; report craft checks as located findings only, never PASS, since AI assessments of creative quality don't track expert judgment. Give locations (chapter, paragraph or line).
+Choose checks for the assigned stage, passage, and criteria. For a typo pass, consult the passage and applicable style rules. Report scoped objective checks as PASS, FAIL, or NOT RUN. Report craft checks as findings only. Locate each finding by chapter, paragraph, or line.
 
 | Check | Type | Verifies |
 |---|---|---|
@@ -20,4 +20,4 @@ Checks are the literary equivalent of tests. Report objective checks as PASS, FA
 - Cite the passage for every finding; quote only the minimum needed.
 - Separate defects (contradict canon or style sheet) from craft suggestions (JUDGMENT).
 - Never claim a full-manuscript check from a sample; state what was read.
-- **READY (publication-ready)** requires: all stages done, continuity and mechanics PASS, no OPEN canon items, rights review done (LIT-ORIGINALITY), and author ACCEPTED.
+- Assess **READY (publication-ready)** only for a readiness request or an authorized publication gate. Verify all LIT-MANUSCRIPT stages complete, manuscript-wide continuity and mechanics PASS, no OPEN canon items (LIT-CANON), rights review complete (LIT-ORIGINALITY), and author ACCEPTED.

@@ -26,7 +26,7 @@ $Sel   = New-Object System.Collections.Generic.List[string]   # paths relative t
 function Get-Rel($File) { $File.FullName.Substring($Src.Length + 1).Replace('\', '/') }
 
 function Get-Field($Name, $Rel) {
-  foreach ($line in Get-Content -LiteralPath (Join-Path $Src $Rel)) {
+  foreach ($line in Get-Content -Encoding UTF8 -LiteralPath (Join-Path $Src $Rel)) {
     if ($line -match "^${Name}:\s*(.*)$") { return $Matches[1].Trim() }
   }
   return ''
@@ -92,6 +92,7 @@ if ($Doms -contains 'software') {
 }
 $Multi = Ask 'Will several agents work on this project? (y/n)' 'n'
 
+Add-Sel 'core/terms.md'
 foreach ($f in Get-Md 'core') { Add-Sel (Get-Rel $f) }
 foreach ($w in 'binding', 'planning', 'records', 'state', 'workspace') { Add-Sel "workflow/$w.md" }
 if ($Scale -eq '3') { Add-Sel 'workflow/enterprise.md' }
@@ -117,7 +118,7 @@ do {
   foreach ($f in @($Sel)) {
     $req = (Get-Field 'requires' $f).Trim('[', ']', ' ')
     foreach ($r in ($req -split '\s*,\s*' | Where-Object { $_ })) {
-      if (-not $Index.ContainsKey($r)) { Write-Warning "$f requires unknown $r"; continue }
+      if (-not $Index.ContainsKey($r)) { throw "$f requires unknown $r" }
       if (-not $Sel.Contains($Index[$r])) { $Sel.Add($Index[$r]); $changed = $true }
     }
   }
@@ -126,9 +127,11 @@ do {
 # --- Write AGENTS.md ---------------------------------------------------------
 $Header = @('', '| ID | File | Summary |', '|---|---|---|')
 function Rows($Prefix) {
-  @($Sel | Where-Object { $_ -like "$Prefix*" } | ForEach-Object {
+  [string[]]$rows = @($Sel | Where-Object { $_ -like "$Prefix*" } | ForEach-Object {
     '| {0} | `{1}` | {2} |' -f (Get-Field 'id' $_), $_, (Get-Field 'summary' $_)
-  } | Sort-Object)
+  })
+  [Array]::Sort($rows, [StringComparer]::Ordinal)
+  $rows
 }
 function Has($Prefix) { [bool]($Sel | Where-Object { $_ -like "$Prefix*" }) }
 
@@ -139,15 +142,21 @@ function Section($Title, $Prefix) { if (Has $Prefix) { Emit '' "## $Title" $Head
 Emit @(
   "# AGENTS.md: $Name", '',
   "<!-- Generated $Stamp by new-agents.ps1 -->", '',
-  'File paths below are relative to `contracts/`. Use only the contracts listed here.',
+  'Contract index paths are relative to `contracts/`. Use only the contracts included here.',
   "Contracts source: $ContractsUrl", '',
-  '1. Read every **Core** and **Organization** contract before any work.',
-  '2. Read a **When relevant** contract only when the task touches its subject.',
+  '1. Apply the embedded Core rules and read every listed Organization contract before work.',
+  '2. Read relevant contracts and applicable prerequisites. Packaged dependencies can cover later stages.',
   '3. Adopt a **Role** only when the human assigns it (e.g. "act as QA"), then read that file.',
   '4. Read a **Tools** contract before using that tool.',
   '5. Precedence: tool/system instructions > core > organization > workflow > domain > tools > multi-agent > role > provider. Lower layers may tighten rules, never weaken them.',
   '', '## Core')
-Emit $Header (Rows 'core/')
+foreach ($f in $Sel | Where-Object { $_ -like 'core/*' }) {
+  $lines = [IO.File]::ReadAllLines((Join-Path $Src $f))
+  $start = [Array]::IndexOf($lines, '---', 1) + 1
+  if ($lines[$start] -like '# *') { $start++ }
+  Emit '' "### $(Get-Field 'id' $f)"
+  for ($i = $start; $i -lt $lines.Length; $i++) { $out.Add($lines[$i]) }
+}
 Section 'Organization' 'organization/'
 Emit '' '## When relevant' $Header
 foreach ($p in 'workflow/', 'software/', 'literature/', 'multi-agent/') { Emit (Rows $p) }
@@ -164,7 +173,7 @@ $zip = [IO.Compression.ZipFile]::Open($zipPath, 'Create')
 try {
   $w = New-Object System.IO.StreamWriter($zip.CreateEntry('AGENTS.md').Open(), (New-Object System.Text.UTF8Encoding($false)))
   try { $w.Write(($out -join "`n") + "`n") } finally { $w.Dispose() }
-  foreach ($f in $Sel) {
+  foreach ($f in $Sel | Where-Object { $_ -notlike 'core/*' }) {
     [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, (Join-Path $Src $f), "contracts/$f")
   }
   foreach ($t in 'chat-save.sh', 'chat-save.ps1', 'chat-check.sh', 'chat-check.ps1', 'archive-format.md') {   # CORE-AUDIT

@@ -9,8 +9,7 @@ Archive chats whenever possible, so questions about what was asked, decided, and
 
 - **Where:** `.ai/archive/<agent>/<YYYYMMDDTHHMMSS>-<topic>.<ext>.gz` (gzip-compressed), or the evidence location named in the binding (WF-BINDING).
 - **When:** at the end of each session or increment, at handoff, before context is compacted or cleared where the tool allows, and whenever the human says "save chat".
-- **How:** run `tools/chat-save.sh` (or `.ps1`). It copies the native transcript where it can find one (Claude Code, Codex); otherwise pass it a file or stdin. Duplicate copies are fine; never overwrite. `chat-check` verifies archiving works.
-- **Written from context** (no native transcript): follow `tools/archive-format.md`.
+- **How:** use `tools/chat-save.sh` (or `.ps1`) with the current session's native transcript when available. For a reconstruction, save only new exchanges as a linked segment per `tools/archive-format.md`. Use `chat-check` to verify archiving.
 - Never fabricate or embellish an archive. Label gaps; never present a summary as verbatim.
 - Redact secrets, credentials, and unauthorized sensitive data, marking each `[REDACTED: reason]`.
 - Archives are append-only. Never edit or delete one except to redact; add corrections as a dated note.
